@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "description": "spike/anomalies detection system for periodic metrics",
-  "main": "index.js",
+  "main": "lib/spike-detector.js",
   "directories": {
     "test": "test"
   },
@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/larissagaulia/spike-detection",
   "devDependencies": {
+    "chai": "^3.5.0",
     "eslint-config-fxa": "^2.1.0",
     "grunt": "^1.0.1",
     "grunt-eslint": "^19.0.0",
