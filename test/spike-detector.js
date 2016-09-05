@@ -1,4 +1,6 @@
 
+/*global describe,beforeEach, it*/
+
 var chai = require('chai');
 var spikeD;
 
