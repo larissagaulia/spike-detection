@@ -6,6 +6,7 @@ var moment = require('moment');
 var sinon = require('sinon');
 var _ = require('underscore')
 var spikeD;
+var normalTrafficMock = {};
 
 var assert = chai.assert;
 
@@ -14,6 +15,13 @@ describe('spike-detection', function () {
 
   var requireSpikeDetection =  function (days){
     spikeD = require('../lib/spike-detector')({days: days});
+  };
+
+  var createMock = function (numberOfDays){
+    for(var day = 0; day <= numberOfDays; day++){
+      normalTrafficMock[moment().subtract(day, 'days').format('YYMMDD')] =
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+    }
   };
 
   it('supports config in days', function () {
@@ -59,16 +67,12 @@ describe('spike-detection', function () {
 
   it('set initial data', function () {
     var numberOfDays = 7;
-    var normalTrafficTest = {};
     requireSpikeDetection(numberOfDays); 
 
-    for(var day = 0; day <= numberOfDays; day++){
-      normalTrafficTest[moment().subtract(day, 'days').format('YYMMDD')]=
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-    }
+    createMock(numberOfDays);
 
     assert.equal(Object.keys(spikeD.getNormalTraffic()).length, 8);
-    spikeD.setNormalTraffic(normalTrafficTest);
+    spikeD.setNormalTraffic(normalTrafficMock);
     assert.equal(Object.keys(spikeD.getNormalTraffic()).length, 8, 'same amout of entries');
     assert.equal(spikeD.getNormalTrafficDay(moment())[3], 3);
     spikeD.increment();
@@ -89,6 +93,34 @@ describe('spike-detection', function () {
     
     assert.isTrue(spy_log.calledOnce);
     assert.isTrue(spy_checkSpike.calledOnce);
+  });
+
+  it('should get last hour count', function () {
+    var numberOfDays = 3;
+    requireSpikeDetection(numberOfDays);
+    createMock(numberOfDays);
+    spikeD.setNormalTraffic(normalTrafficMock);
+
+    var now = moment();
+    var hour = now.format('H');
+    spikeD.logLastHourCount(moment());
+    assert.equal(spikeD.getNormalTrafficDay(now)[hour], parseInt(hour));   
+  });
+
+  it('should get a spike', function () {
+    var numberOfDays = 28;
+    requireSpikeDetection(numberOfDays);
+    createMock(numberOfDays);
+    spikeD.setNormalTraffic(normalTrafficMock);
+
+    var now = moment();
+    var hour = now.format('H');
+    var normalCount = spikeD.getNormalTrafficDay(now)[hour]
+    //TODO: make 'spike factor' configurable
+    for(var i=0; i<(10*normalCount); i++){
+      spikeD.increment(now)
+    }
+    assert.isTrue(spikeD.checkForSpike(now.add(1, 'hours')));   
   });
 
 });
