@@ -69,8 +69,12 @@ describe('spike-detection', function () {
 
     assert.equal(Object.keys(spikeD.getNormalTraffic()).length, 8);
     spikeD.setNormalTraffic(normalTrafficTest);
-    assert.equal(Object.keys(spikeD.getNormalTraffic()).length, 8);
+    assert.equal(Object.keys(spikeD.getNormalTraffic()).length, 8, 'same amout of entries');
     assert.equal(spikeD.getNormalTrafficDay(moment())[3], 3);
+    spikeD.increment();
+    
+    var hour = moment().format('H');
+    assert.equal(spikeD.getNormalTrafficDay(moment())[hour], parseInt(hour)+1);
   });
 
   it('tests _incrementTo with new hour', function () {
@@ -81,7 +85,7 @@ describe('spike-detection', function () {
     var spy_checkSpike = sinon.spy(spikeD, 'checkForSpike');
 
     var oneHourFromNow = moment().add(1, 'hour');
-    spikeD._incrementTo(oneHourFromNow);
+    spikeD.increment(oneHourFromNow);
     
     assert.isTrue(spy_log.calledOnce);
     assert.isTrue(spy_checkSpike.calledOnce);
