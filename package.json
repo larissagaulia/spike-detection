@@ -32,7 +32,8 @@
     "grunt": "^1.0.1",
     "grunt-eslint": "^19.0.0",
     "load-grunt-tasks": "^3.5.2",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "sinon": "^1.17.5"
   },
   "dependencies": {
     "moment": "^2.14.1"
