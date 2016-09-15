@@ -7,6 +7,8 @@ var sinon = require('sinon');
 var _ = require('lodash')
 var spikeD;
 var normalTrafficMock = {};
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 
 var assert = chai.assert;
 
@@ -120,7 +122,36 @@ describe('spike-detection', function () {
     for(var i=0; i<(10*normalCount); i++){
       spikeD.increment(now)
     }
-    assert.isTrue(spikeD.checkForSpike(now.add(1, 'hours')));   
+    assert.isTrue(spikeD.checkForSpike(now.add(1, 'hours')));  
+
+  });
+
+  it('should emit a spike event', function(done){
+    var eventFired = false
+    
+    setTimeout(function () {
+      assert(eventFired, 'Event did not fire in 100 ms.');
+      done();
+    }, 100); //timeout with an error in 100 ms
+    
+    var numberOfDays = 28;
+    requireSpikeDetection(numberOfDays);
+    createMock(numberOfDays);
+    spikeD.setNormalTraffic(normalTrafficMock);
+
+    spikeD.on('spike',function(){
+      eventFired = true
+    });
+
+    var now = moment();
+    var hour = now.format('H');
+    var normalCount = spikeD.getNormalTrafficDay(now)[hour]
+    //TODO: make 'spike factor' configurable
+    for(var i=0; i<(10*normalCount); i++){
+      spikeD.increment(now)
+    }
+    spikeD.checkForSpike(now.add(1, 'hours'))
+
   });
 
 });
