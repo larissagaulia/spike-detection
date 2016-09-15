@@ -4,7 +4,7 @@
 var chai = require('chai');
 var moment = require('moment');
 var sinon = require('sinon');
-var _ = require('underscore')
+var _ = require('lodash')
 var spikeD;
 var normalTrafficMock = {};
 
