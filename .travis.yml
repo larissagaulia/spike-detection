@@ -4,3 +4,7 @@ node_js:
   - "4"
 
 sudo: false
+
+script: 
+  - npm run coverage
+  - npm test

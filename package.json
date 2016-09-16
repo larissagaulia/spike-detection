@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "coverage": "istanbul cover _mocha -- -R spec",
     "test": "mocha",
     "lint": "grunt lint"
   },
@@ -31,6 +32,7 @@
     "eslint-config-fxa": "^2.1.0",
     "grunt": "^1.0.1",
     "grunt-eslint": "^19.0.0",
+    "istanbul": "^0.4.5",
     "load-grunt-tasks": "^3.5.2",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5"
