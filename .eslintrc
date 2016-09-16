@@ -1,0 +1,6 @@
+{
+  "extends": "fxa",
+  "rules": {
+    "camelcase": 0
+  }
+}

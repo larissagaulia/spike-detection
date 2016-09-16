@@ -1,0 +1,45 @@
+{
+  "name": "spike-detection",
+  "version": "0.0.1",
+  "private": false,
+  "description": "spike/anomalies detection system for periodic metrics",
+  "main": "lib/spike-detector.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "coverage": "istanbul cover _mocha -- -R spec",
+    "test": "mocha",
+    "lint": "grunt lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/larissagaulia/spike-detection"
+  },
+  "keywords": [
+    "spike detection",
+    "anomaly",
+    "irregularity"
+  ],
+  "author": "Larissa Gaulia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/larissagaulia/spike-detection/issues"
+  },
+  "homepage": "https://github.com/larissagaulia/spike-detection",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint-config-fxa": "^2.1.0",
+    "grunt": "^1.0.1",
+    "grunt-eslint": "^19.0.0",
+    "istanbul": "^0.4.5",
+    "load-grunt-tasks": "^3.5.2",
+    "mocha": "^3.0.2",
+    "sinon": "^1.17.5"
+  },
+  "dependencies": {
+    "debug": "^2.2.0",
+    "lodash": "^4.15.0",
+    "moment": "^2.14.1"
+  }
+}
